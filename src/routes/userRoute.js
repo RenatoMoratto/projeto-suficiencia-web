@@ -1,11 +1,11 @@
 import express from "express";
-import { authenticate, findAll, findUserById } from "../controllers/user.js";
+import { authenticate, create, findAll } from "../controllers/user.js";
 import { verifyToken } from "../middlewares/authenticate.js";
 
 const router = express.Router();
 
-router.get("/all", verifyToken, findAll);
-router.get("/:id", verifyToken, findUserById);
+router.post("/new", create);
 router.post("/oauth", authenticate);
+router.get("/all", verifyToken, findAll);
 
 export { router as userRouter };
