@@ -1,0 +1,22 @@
+{
+	"name": "projeto-suficiencia-back",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"main": "./src/app.js",
+	"scripts": {
+		"start": "node -r dotenv/config .",
+		"dev": "nodemon -r dotenv/config ."
+	},
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.1",
+		"express": "~4.16.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.4.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.18"
+	}
+}
