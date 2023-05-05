@@ -1,4 +1,4 @@
-export type OAuthDto = {
+export type OAuthCreateRequest = {
 	email: string;
 	password: string;
 };

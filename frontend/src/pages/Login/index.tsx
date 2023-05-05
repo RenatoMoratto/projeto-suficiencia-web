@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { OAuthDto } from "../../api/models/OAuthDto";
+import { OAuthCreateRequest } from "../../api/models/OAuthCreateRequest";
 import { OAuthService } from "../../api/services/OAuthService";
 import Input from "../../components/Input";
 import Message from "../../components/Message";
@@ -10,13 +10,13 @@ interface LoginProps {
 }
 
 export function Login({ onLogin }: LoginProps) {
-	const loginInitialValue: OAuthDto = {
+	const loginInitialValue: OAuthCreateRequest = {
 		email: "",
 		password: "",
 	};
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [userData, setUserData] = useState<OAuthDto>(loginInitialValue);
+	const [userData, setUserData] = useState<OAuthCreateRequest>(loginInitialValue);
 	const [errors, setErrors] = useState<Map<string, string>>(new Map());
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
