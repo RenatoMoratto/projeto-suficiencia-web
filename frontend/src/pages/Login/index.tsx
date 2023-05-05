@@ -3,15 +3,14 @@ import { OAuthCreateRequest } from "../../api/models/OAuthCreateRequest";
 import { OAuthService } from "../../api/services/OAuthService";
 import Input from "../../components/Input";
 import Message from "../../components/Message";
-import styles from "./login.module.css";
 import AuthContext from "../../contexts/auth";
 
-export function Login() {
-	const loginInitialValue: OAuthCreateRequest = {
-		email: "",
-		password: "",
-	};
+const loginInitialValue: OAuthCreateRequest = {
+	email: "",
+	password: "",
+};
 
+export function Login() {
 	const { login } = useContext(AuthContext);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,7 +19,6 @@ export function Login() {
 	const [errorMessage, setErrorMessage] = useState<string>("");
 
 	const changeHandler = (e: { target: { name: string; value: string } }) => {
-		console.log(e.target.name);
 		setUserData(prev => ({
 			...prev,
 			[e.target.name]: e.target.value,
@@ -54,9 +52,9 @@ export function Login() {
 	};
 
 	return (
-		<main className={styles.main}>
-			<h2>Welcome</h2>
+		<main>
 			<form onSubmit={submitHandler}>
+				<h2>Welcome</h2>
 				<Input
 					value={userData.email}
 					onChange={changeHandler}
@@ -78,7 +76,7 @@ export function Login() {
 					isInvalid={!!errors.get("password")}
 				/>
 				{errorMessage.length > 0 && <Message>{errorMessage}</Message>}
-				<button disabled={isLoading} className="btn" type="submit">
+				<button disabled={isLoading} type="submit">
 					{isLoading ? "Loading..." : "Login"}
 				</button>
 			</form>

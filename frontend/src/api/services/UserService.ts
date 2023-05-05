@@ -15,7 +15,7 @@ export class UserService {
 		}
 		if (!user.password) {
 			errors.set("password", "Password is required.");
-		} else if (user.password.length <= 6) {
+		} else if (user.password.length < 6) {
 			errors.set("password", "Password must have 6 or more characters.");
 		}
 

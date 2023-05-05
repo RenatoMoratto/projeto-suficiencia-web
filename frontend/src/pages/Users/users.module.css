@@ -10,13 +10,3 @@ section {
 	align-items: center;
 	justify-content: space-between;
 }
-
-.actions {
-	display: flex;
-	gap: 1rem;
-}
-
-.actions > .logout {
-	color: #1a1a1a;
-	background-color: rgba(255, 255, 255, 0.87);
-}

@@ -39,6 +39,21 @@ h1 {
 	line-height: 1.1;
 }
 
+h2 {
+	margin: 0;
+	padding: 0;
+
+	margin-bottom: 1rem;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
@@ -50,15 +65,18 @@ button {
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
+
 button:hover {
 	border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
 }
 
 table {
+	margin-top: 1rem;
 	border-collapse: collapse;
 	border-spacing: 0;
 	empty-cells: show;
@@ -81,6 +99,16 @@ thead {
 	color: #000;
 	text-align: left;
 	vertical-align: bottom;
+}
+
+.actions {
+	display: flex;
+	gap: 1rem;
+}
+
+.actions > :nth-child(1) {
+	color: #1a1a1a;
+	background-color: rgba(255, 255, 255, 0.87);
 }
 
 @media (prefers-color-scheme: light) {
