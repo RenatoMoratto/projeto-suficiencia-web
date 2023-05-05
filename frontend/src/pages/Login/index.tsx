@@ -1,19 +1,18 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { OAuthCreateRequest } from "../../api/models/OAuthCreateRequest";
 import { OAuthService } from "../../api/services/OAuthService";
 import Input from "../../components/Input";
 import Message from "../../components/Message";
 import styles from "./login.module.css";
+import AuthContext from "../../contexts/auth";
 
-interface LoginProps {
-	onLogin: (token: string) => void;
-}
-
-export function Login({ onLogin }: LoginProps) {
+export function Login() {
 	const loginInitialValue: OAuthCreateRequest = {
 		email: "",
 		password: "",
 	};
+
+	const { login } = useContext(AuthContext);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [userData, setUserData] = useState<OAuthCreateRequest>(loginInitialValue);
@@ -46,7 +45,7 @@ export function Login({ onLogin }: LoginProps) {
 		try {
 			const response = await OAuthService.login(userData);
 
-			onLogin(`${response.token_type} ${response.access_token}`);
+			login(`${response.token_type} ${response.access_token}`);
 		} catch (e) {
 			setErrorMessage(String(e));
 		} finally {

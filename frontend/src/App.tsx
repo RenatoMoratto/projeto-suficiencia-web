@@ -1,25 +1,16 @@
 import { Login } from "./pages/Login";
-import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Users } from "./pages/Users";
+import { useContext } from "react";
+import AuthContext from "./contexts/auth";
 
 function App() {
-	const [token, setToken] = useLocalStorage("pwfs.token", null);
-
-	const isLoggedIn = !!token;
-
-	const loginHandler = (token: string) => {
-		setToken(token);
-	};
-
-	const logoutHandler = () => {
-		setToken(null);
-	};
+	const { isLoggedIn } = useContext(AuthContext);
 
 	if (isLoggedIn) {
-		return <Users token={token} onLogout={logoutHandler} />;
+		return <Users />;
 	}
 
-	return <Login onLogin={loginHandler} />;
+	return <Login />;
 }
 
 export default App;
