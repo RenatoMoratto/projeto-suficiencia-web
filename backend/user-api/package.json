@@ -1,12 +1,12 @@
 {
-	"name": "projeto-suficiencia-back",
+	"name": "user-api",
 	"version": "1.0.0",
 	"private": true,
 	"type": "module",
-	"main": "./src/app.js",
+	"main": "src/app.js",
 	"scripts": {
-		"start": "node -r dotenv/config .",
-		"dev": "nodemon -r dotenv/config ."
+		"start": "node -r dotenv/config src/app.js",
+		"dev": "nodemon -r dotenv/config src/app.js"
 	},
 	"dependencies": {
 		"bcrypt": "^5.0.1",

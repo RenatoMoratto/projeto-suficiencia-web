@@ -1,20 +1,6 @@
-# Install node alpine
 FROM node:alpine
-
-# Set the workdir /var/www/back
 WORKDIR /var/www/back
-
-# Copy the package.json to workdir
 COPY backend/user-api/package.json ./
-
-# Run npm install - install the npm dependencies
 RUN npm i
-
-# Copy application source
 COPY ./ ./
-
-# Expose application ports
-EXPOSE 8080
-
-# Start the application
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

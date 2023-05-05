@@ -50,7 +50,7 @@ export const authenticate = async (req, res) => {
 
 		const token = await jwt.sign({ id: user._id }, jwt_secret);
 
-		res.status(200).send({ access_token: token });
+		res.status(200).send({ access_token: token, token_type: "Bearer" });
 	} catch (error) {
 		const errorMessage = isEmpty(error) ? "Internal server error." : error;
 		res.status(500).json({ message: errorMessage });

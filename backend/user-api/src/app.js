@@ -14,15 +14,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-let redisClient;
+// let redisClient;
 
-(async () => {
-	redisClient = redis.createClient();
+// (async () => {
+// 	redisClient = redis.createClient();
 
-	redisClient.on("error", error => console.error(`Error : ${error}`));
+// 	redisClient.on("error", error => console.error(`Error : ${error}`));
 
-	await redisClient.connect();
-})();
+// 	await redisClient.connect();
+// })();
 
 app.use("/user", userRouter);
 
