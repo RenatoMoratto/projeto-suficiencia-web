@@ -5,7 +5,7 @@
 
 	color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	background-color: #3a3a3a;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -24,10 +24,14 @@ a:hover {
 }
 
 body {
+	margin: 0;
+	padding: 0;
 	min-width: 100vw;
 	min-height: 100vh;
-	display: flex;
-	place-items: center;
+}
+
+main {
+	padding: 2rem;
 }
 
 h1 {
@@ -52,6 +56,31 @@ button:hover {
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	empty-cells: show;
+	border: 1px solid #cbcbcb;
+	width: 100%;
+}
+
+td,
+th {
+	border-left: 1px solid #cbcbcb;
+	border-width: 0 0 0 1px;
+	font-size: inherit;
+	margin: 0;
+	overflow: visible;
+	padding: 0.5em 1em;
+}
+
+thead {
+	background-color: #e0e0e0;
+	color: #000;
+	text-align: left;
+	vertical-align: bottom;
 }
 
 @media (prefers-color-scheme: light) {
