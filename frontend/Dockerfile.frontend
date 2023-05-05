@@ -1,0 +1,7 @@
+FROM node:alpine
+WORKDIR /app
+COPY frontend/package.json ./
+RUN yarn
+COPY ./ ./
+EXPOSE 3000
+ENTRYPOINT [ "yarn", "dev" ]
