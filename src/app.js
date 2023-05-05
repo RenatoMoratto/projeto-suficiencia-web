@@ -1,3 +1,4 @@
+import redis from "redis";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -12,6 +13,16 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+let redisClient;
+
+(async () => {
+	redisClient = redis.createClient();
+
+	redisClient.on("error", error => console.error(`Error : ${error}`));
+
+	await redisClient.connect();
+})();
 
 app.use("/user", userRouter);
 

@@ -5,8 +5,6 @@ export const verifyToken = (req, res, next) => {
 	const authorization = req.headers.authorization;
 	const token = authorization?.split(" ")[1];
 
-	console.log(token);
-
 	if (!token) {
 		return res.status(401).send({ message: "Unauthorized: Access token is missing." });
 	}

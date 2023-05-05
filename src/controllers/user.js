@@ -13,7 +13,12 @@ export const findAll = async (req, res) => {
 			return;
 		}
 
-		res.status(200).json(users);
+		await redisClient.set("users", JSON.stringify(results), {
+			EX: 120, // 2 minutes
+			NX: true,
+		});
+
+		res.status(200).json({ fromCache: false, data: users });
 	} catch (error) {
 		const errorMessage = isEmpty(error) ? "Internal server error." : error;
 		res.status(500).json({ erro: errorMessage });
@@ -51,6 +56,7 @@ export const authenticate = async (req, res) => {
 		res.status(500).json({ message: errorMessage });
 	}
 };
+
 export const create = async (req, res) => {
 	const { name, email, password } = req.body;
 
