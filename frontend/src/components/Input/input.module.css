@@ -1,0 +1,23 @@
+input,
+label,
+textarea {
+	border-radius: 6px;
+}
+input,
+textarea {
+	line-height: 1.55em;
+	width: 12rem;
+}
+
+textarea {
+	resize: vertical;
+}
+
+.input-group {
+	display: grid;
+	gap: 3px;
+}
+
+.invalid {
+	border: 1px solid red;
+}
