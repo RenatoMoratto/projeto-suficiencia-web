@@ -33,11 +33,16 @@ run() {
 }
 
 stop_existing() {
-    BACK="$(docker ps --all --quiet --filter=name=user-api)"
-    REDIS="$(docker ps --all --quiet --filter=name=user-cache)"
-    RABBIT="$(docker ps --all --quiet --filter=name=user-queue)"
     MONGO="$(docker ps --all --quiet --filter=name=mongodb)"
+    REDIS="$(docker ps --all --quiet --filter=name=user-cache)"
+    RABBIT="$(docker ps --all --quiet --filter=name=rabbitmq)"
+    USERQUEUE="$(docker ps --all --quiet --filter=name=user-queue)"
+    BACK="$(docker ps --all --quiet --filter=name=user-api)"
     FRONT="$(docker ps --all --quiet --filter=name=frontend)"
+
+    if [ -n "$MONGO" ]; then
+        docker stop $MONGO
+    fi
 
     if [ -n "$REDIS" ]; then
         docker stop $REDIS
@@ -47,12 +52,12 @@ stop_existing() {
         docker stop $RABBIT
     fi
 
-    if [ -n "$BACK" ]; then
-        docker stop $BACK
+    if [ -n "$USERQUEUE" ]; then
+        docker stop $USERQUEUE
     fi
 
-    if [ -n "$MONGO" ]; then
-        docker stop $MONGO
+    if [ -n "$BACK" ]; then
+        docker stop $BACK
     fi
 
     if [ -n "$FRONT" ]; then

@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.0"
 
 services:
     mongodb:
@@ -30,14 +30,22 @@ services:
 
     rabbitmq:
         container_name: rabbitmq
-        image: rabbitmq:3-management-alpine
-        restart: always
+        image: rabbitmq:3.11-management
+        restart: on-failure
         env_file: ./.env
+        environment:
+            - RABBITMQ_DEFAULT_USER=$RABBIT_USER
+            - RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD
         ports:
             - $RABBIT_PORT:$RABBIT_PORT
             - $RABBIT_UI_PORT:$RABBIT_UI_PORT
+        healthcheck:
+            test: ["CMD", "rabbitmqctl", "status"]
+            interval: 5s
+            timeout: 30s
+            retries: 3
         volumes:
-            - './data/broker:/var/lib/rabbitmq/'
+            - "./data/broker:/var/lib/rabbitmq/mnesia"
         networks:
             - backend
 
@@ -59,6 +67,11 @@ services:
             - RABBIT_PORT:$RABBIT_PORT
             - RABBIT_HOST:$RABBIT_HOST
             - PORT:$USER_QUEUE_DOCKER_PORT
+            - RABBIT_USER=$RABBIT_USER
+            - RABBIT_PASSWORD=$RABBIT_PASSWORD
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
         networks:
             - backend
 
@@ -77,6 +90,10 @@ services:
             - DB_PORT=$MONGODB_DOCKER_PORT
             - REDIS_HOST=$REDIS_HOST
             - REDIS_PORT=$REDIS_PORT
+        depends_on:
+            - mongodb
+            - user-cache
+            - user-queue
         networks:
             - backend
             - frontend
@@ -89,6 +106,8 @@ services:
                 - API_BASE_URL=$CLIENT_API_BASE_URL
         ports:
             - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
+        depends_on:
+            - user-api
         networks:
             - frontend
 
