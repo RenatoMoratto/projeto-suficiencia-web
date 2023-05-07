@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { db_connection_string, port } from "./constants/environment_vars.js";
 import { userRouter } from "./routes/userRoute.js";
-import { createDefaultUser } from "./controllers/user.js";
 import redis from "redis";
 import { redis_connection_string } from "./constants/environment_vars.js";
 
@@ -22,7 +21,6 @@ app.use("/user", userRouter);
 
 try {
 	await mongoose.connect(db_connection_string);
-	await createDefaultUser();
 
 	await redisClient.connect();
 

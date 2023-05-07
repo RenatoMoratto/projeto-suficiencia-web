@@ -5,8 +5,8 @@ import { cacheUsersData } from "../middlewares/cache.js";
 
 const router = express.Router();
 
-router.post("/new", create);
 router.post("/oauth", authenticate);
+router.post("/new", verifyToken, create);
 router.get("/all", verifyToken, cacheUsersData, findAll);
 
 export { router as userRouter };

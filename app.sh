@@ -35,8 +35,17 @@ run() {
 stop_existing() {
     BACK="$(docker ps --all --quiet --filter=name=user-api)"
     REDIS="$(docker ps --all --quiet --filter=name=user-cache)"
+    RABBIT="$(docker ps --all --quiet --filter=name=user-queue)"
     MONGO="$(docker ps --all --quiet --filter=name=mongodb)"
     FRONT="$(docker ps --all --quiet --filter=name=frontend)"
+
+    if [ -n "$REDIS" ]; then
+        docker stop $REDIS
+    fi
+
+    if [ -n "$RABBIT" ]; then
+        docker stop $RABBIT
+    fi
 
     if [ -n "$BACK" ]; then
         docker stop $BACK
