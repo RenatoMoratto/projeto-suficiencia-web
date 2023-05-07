@@ -2,7 +2,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { isEmpty } from "../utils/stringUtils.js";
-import { jwt_secret, defaultUser } from "../constants/environment_vars.js";
+import { jwt_secret, default_user } from "../constants/environment_vars.js";
+import { redisClient } from "../app.js";
 
 export const findAll = async (req, res) => {
 	try {
@@ -13,10 +14,10 @@ export const findAll = async (req, res) => {
 			return;
 		}
 
-		// await redisClient.set("users", JSON.stringify(results), {
-		// 	EX: 120, // 2 minutes
-		// 	NX: true,
-		// });
+		await redisClient.set("users", JSON.stringify(users), {
+			EX: 120, // 2 minutes
+			NX: true,
+		});
 
 		res.status(200).json({ fromCache: false, data: users });
 	} catch (error) {
@@ -81,6 +82,9 @@ export const create = async (req, res) => {
 		const user = { name, email, password: hashPassword };
 
 		await User.create(user);
+
+		redisClient.del("users");
+
 		res.status(200).json({ message: "User register with success!" });
 	} catch (error) {
 		const errorMessage = isEmpty(error) ? "Internal server error." : error;
@@ -90,8 +94,8 @@ export const create = async (req, res) => {
 
 export const createDefaultUser = async () => {
 	try {
-		const hashPassword = await bcrypt.hash(defaultUser.password, 10);
-		const user = { name: defaultUser.name, email: defaultUser.email, password: hashPassword };
+		const hashPassword = await bcrypt.hash(default_user.password, 10);
+		const user = { name: default_user.name, email: default_user.email, password: hashPassword };
 
 		await User.create(user);
 		console.log("Default user inserted successfully!");

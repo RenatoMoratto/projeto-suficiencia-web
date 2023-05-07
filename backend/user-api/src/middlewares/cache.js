@@ -1,12 +1,12 @@
-export async function cacheUsersData(req, res, next) {
-	const users = req.params.users;
-	let results;
+import { redisClient } from "../app.js";
 
+export async function cacheUsersData(req, res, next) {
 	try {
-		const cacheResults = await redisClient.get(users);
+		const cacheResults = await redisClient.get("users");
 
 		if (cacheResults) {
-			results = JSON.parse(cacheResults);
+			const results = JSON.parse(cacheResults);
+
 			res.status(200).send({
 				fromCache: true,
 				data: results,
@@ -15,7 +15,6 @@ export async function cacheUsersData(req, res, next) {
 			next();
 		}
 	} catch (error) {
-		console.error(error);
 		res.status(404);
 	}
 }

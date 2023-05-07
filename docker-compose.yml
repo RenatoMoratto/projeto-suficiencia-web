@@ -16,6 +16,18 @@ services:
         networks:
             - backend
 
+    user-cache:
+        container_name: user-cache
+        image: redis:6.2-alpine
+        restart: unless-stopped
+        env_file: ./.env
+        ports:
+            - $REDIS_PORT:$REDIS_PORT
+        volumes:
+            - cache:/data
+        networks:
+            - backend
+
     user-api:
         container_name: user-api
         restart: unless-stopped
@@ -31,8 +43,11 @@ services:
             - DB_NAME=$MONGODB_DATABASE
             - DB_PORT=$MONGODB_DOCKER_PORT
             - DEFAULT_USER=$NODE_DEFAULT_USER
+            - REDIS_HOST=$REDIS_HOST
+            - REDIS_PORT=$REDIS_PORT
         depends_on:
             - mongodb
+            - user-cache
         networks:
             - backend
             - frontend
@@ -52,6 +67,7 @@ services:
 
 volumes:
     db:
+    cache:
 
 networks:
     backend:

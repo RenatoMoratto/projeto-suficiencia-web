@@ -34,6 +34,7 @@ run() {
 
 stop_existing() {
     BACK="$(docker ps --all --quiet --filter=name=user-api)"
+    REDIS="$(docker ps --all --quiet --filter=name=user-cache)"
     MONGO="$(docker ps --all --quiet --filter=name=mongodb)"
     FRONT="$(docker ps --all --quiet --filter=name=frontend)"
 
