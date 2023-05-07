@@ -1,6 +1,0 @@
-FROM node:alpine
-WORKDIR /var/www/back
-COPY backend/user-api/package.json ./
-RUN npm i
-COPY ./ ./
-CMD ["npm", "start"]

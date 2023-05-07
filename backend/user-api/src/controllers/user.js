@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { isEmpty } from "../utils/stringUtils.js";
-import { jwt_secret } from "../constants/environment_vars.js";
+import { jwt_secret, defaultUser } from "../constants/environment_vars.js";
 
 export const findAll = async (req, res) => {
 	try {
@@ -13,10 +13,10 @@ export const findAll = async (req, res) => {
 			return;
 		}
 
-		await redisClient.set("users", JSON.stringify(results), {
-			EX: 120, // 2 minutes
-			NX: true,
-		});
+		// await redisClient.set("users", JSON.stringify(results), {
+		// 	EX: 120, // 2 minutes
+		// 	NX: true,
+		// });
 
 		res.status(200).json({ fromCache: false, data: users });
 	} catch (error) {
@@ -85,5 +85,18 @@ export const create = async (req, res) => {
 	} catch (error) {
 		const errorMessage = isEmpty(error) ? "Internal server error." : error;
 		res.status(500).json({ message: errorMessage });
+	}
+};
+
+export const createDefaultUser = async () => {
+	try {
+		const hashPassword = await bcrypt.hash(defaultUser.password, 10);
+		const user = { name: defaultUser.name, email: defaultUser.email, password: hashPassword };
+
+		await User.create(user);
+		console.log("Default user inserted successfully!");
+	} catch (error) {
+		const errorMessage = isEmpty(error) ? "Internal server error." : error;
+		console.log("Error when inserting default user: " + errorMessage);
 	}
 };
