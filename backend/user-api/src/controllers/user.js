@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { isEmpty } from "../utils/stringUtils.js";
 import { jwt_secret } from "../constants/environment_vars.js";
-import { redisClient } from "../app.js";
+import { channel, redisClient } from "../app.js";
 
 export const findAll = async (req, res) => {
 	try {
@@ -84,6 +84,7 @@ export const create = async (req, res) => {
 
 		res.status(200).json({ message: "User register with success!" });
 	} catch (error) {
+		console.error(error);
 		const errorMessage = isEmpty(error) ? "Internal server error." : error;
 		res.status(500).json({ message: errorMessage });
 	}
