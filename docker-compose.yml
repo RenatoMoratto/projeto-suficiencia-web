@@ -4,7 +4,7 @@ services:
     mongodb:
         container_name: mongodb
         image: mongo:5.0.2
-        restart: unless-stopped
+        restart: always
         env_file: ./.env
         environment:
             - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
@@ -19,7 +19,7 @@ services:
     user-cache:
         container_name: user-cache
         image: redis:6.2-alpine
-        restart: unless-stopped
+        restart: always
         env_file: ./.env
         ports:
             - $REDIS_PORT:$REDIS_PORT
@@ -31,10 +31,10 @@ services:
     rabbitmq:
         container_name: rabbitmq
         image: rabbitmq:3-management-alpine
-        restart: unless-stopped
+        restart: always
         env_file: ./.env
         ports:
-            - $RABBIT_QUEUE_PORT:$RABBIT_QUEUE_PORT
+            - $RABBIT_PORT:$RABBIT_PORT
             - $RABBIT_UI_PORT:$RABBIT_UI_PORT
         volumes:
             - './data/broker:/var/lib/rabbitmq/'
@@ -43,7 +43,7 @@ services:
 
     user-queue:
         container_name: user-queue
-        restart: unless-stopped
+        restart: on-failure
         build:
             context: ./backend/user-queue
         env_file: ./.env
@@ -55,17 +55,15 @@ services:
             - DB_PASSWORD=$MONGODB_PASSWORD
             - DB_NAME=$MONGODB_DATABASE
             - DB_PORT=$MONGODB_DOCKER_PORT
-            - DEFAULT_USER=$NODE_DEFAULT_USER
-            - RABBIT_PORT:$RABBIT_QUEUE_PORT
+            - DEFAULT_USER=$DEFAULT_USER
+            - RABBIT_PORT:$RABBIT_PORT
+            - RABBIT_HOST:$RABBIT_HOST
             - PORT:$USER_QUEUE_DOCKER_PORT
-        depends_on:
-            - mongodb
         networks:
             - backend
 
     user-api:
         container_name: user-api
-        restart: unless-stopped
         build:
             context: ./backend/user-api
         env_file: ./.env
@@ -77,12 +75,8 @@ services:
             - DB_PASSWORD=$MONGODB_PASSWORD
             - DB_NAME=$MONGODB_DATABASE
             - DB_PORT=$MONGODB_DOCKER_PORT
-            - DEFAULT_USER=$NODE_DEFAULT_USER
             - REDIS_HOST=$REDIS_HOST
             - REDIS_PORT=$REDIS_PORT
-        depends_on:
-            - mongodb
-            - user-cache
         networks:
             - backend
             - frontend
@@ -95,8 +89,6 @@ services:
                 - API_BASE_URL=$CLIENT_API_BASE_URL
         ports:
             - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
-        depends_on:
-            - user-api
         networks:
             - frontend
 
