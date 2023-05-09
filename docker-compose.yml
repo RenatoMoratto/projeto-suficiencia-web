@@ -4,15 +4,16 @@ services:
     mongodb:
         container_name: mongodb
         image: mongo:5.0.2
-        restart: always
+        restart: on-failure
         env_file: ./.env
         environment:
             - MONGO_INITDB_ROOT_USERNAME=$DB_ROOT_USER
             - MONGO_INITDB_ROOT_PASSWORD=$DB_ROOT_PASS
+            - MONGO_INITDB_DB_NAME=$DB_NAME
         ports:
             - $DB_LOCAL_PORT:$DB_DOCKER_PORT
         volumes:
-            # - ./mongo-init-scripts:/docker-entrypoint-initdb.d/
+            - ./mongo-init-scripts:/docker-entrypoint-initdb.d/
             - db:/data/db
         networks:
             - backend
@@ -60,8 +61,8 @@ services:
             - $QUEUE_LOCAL_PORT:$QUEUE_DOCKER_PORT
         environment:
             - DB_HOST=mongodb
-            - DB_WRITE_USER=$DB_ROOT_USER
-            - DB_WRITE_PASS=$DB_ROOT_PASS
+            - DB_WRITE_USER=$DB_WRITE_USER
+            - DB_WRITE_PASS=$DB_WRITE_PASS
             - DB_NAME=$DB_NAME
             - DB_PORT=$DB_DOCKER_PORT
             - DEFAULT_USER=$DEFAULT_USER
@@ -85,8 +86,8 @@ services:
             - $API_LOCAL_PORT:$API_DOCKER_PORT
         environment:
             - DB_HOST=mongodb
-            - DB_READ_USER=$DB_ROOT_USER
-            - DB_READ_PASS=$DB_ROOT_PASS
+            - DB_READ_USER=$DB_READ_USER
+            - DB_READ_PASS=$DB_READ_PASS
             - DB_NAME=$DB_NAME
             - DB_PORT=$DB_DOCKER_PORT
             - REDIS_HOST=$REDIS_HOST
